@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Calculate your company's Burn Multiple - a key SaaS metric measuring capital efficiency by comparing net burn to net new ARR.">
+    <meta name="keywords" content="burn multiple calculator, SaaS metrics, capital efficiency, ARR, net burn">
+    <title>Burn Multiple Calculator | SaaS Capital Efficiency Tool</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="bmc-demo-wrapper">
+        <main class="bmc-container" role="main">
+            <!-- Header Section -->
+            <header class="bmc-header">
+                <h1 class="bmc-header__title" id="calculator-title">Burn Multiple Calculator</h1>
+                <p class="bmc-header__description">
+                    Measure your capital efficiency by calculating how much you're burning per dollar of new ARR generated.
+                </p>
+            </header>
+
+            <!-- Calculator Form -->
+            <form class="bmc-form" aria-labelledby="calculator-title" novalidate>
+                <!-- Currency Selector -->
+                <div class="bmc-form__group bmc-form__group--currency">
+                    <label for="bmc-currency" class="bmc-label">
+                        Currency
+                    </label>
+                    <div class="bmc-input__wrapper">
+                        <select
+                            id="bmc-currency"
+                            class="bmc-select"
+                            aria-label="Select currency for calculations"
+                        >
+                            <option value="EUR" selected>EUR (€) - Euro</option>
+                            <option value="USD">USD ($) - US Dollar</option>
+                            <option value="GBP">GBP (£) - British Pound</option>
+                            <option value="JPY">JPY (¥) - Japanese Yen</option>
+                            <option value="CNY">CNY (¥) - Chinese Yuan</option>
+                            <option value="INR">INR (₹) - Indian Rupee</option>
+                            <option value="AUD">AUD (A$) - Australian Dollar</option>
+                            <option value="CAD">CAD (C$) - Canadian Dollar</option>
+                            <option value="CHF">CHF (Fr) - Swiss Franc</option>
+                            <option value="SEK">SEK (kr) - Swedish Krona</option>
+                            <option value="NOK">NOK (kr) - Norwegian Krone</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Net Burn Input -->
+                <div class="bmc-form__group">
+                    <label for="bmc-net-burn" class="bmc-label">
+                        Net Burn
+                        <span class="bmc-label__required" aria-label="required">*</span>
+                    </label>
+                    <div class="bmc-input__wrapper">
+                        <span class="bmc-input__prefix" id="bmc-burn-prefix" aria-hidden="true">€</span>
+                        <input
+                            type="number"
+                            id="bmc-net-burn"
+                            class="bmc-input"
+                            placeholder="500000"
+                            min="0"
+                            step="0.01"
+                            aria-label="Net Burn amount"
+                            aria-required="true"
+                            aria-describedby="bmc-burn-help"
+                            aria-invalid="false"
+                        />
+                    </div>
+                    <span id="bmc-burn-help" class="bmc-help-text">
+                        Total cash consumed in the period (must be positive)
+                    </span>
+                    <span id="bmc-burn-error" class="bmc-error-text" role="alert" aria-live="polite"></span>
+                </div>
+
+                <!-- Net New ARR Input -->
+                <div class="bmc-form__group">
+                    <label for="bmc-net-arr" class="bmc-label">
+                        Net New ARR
+                        <span class="bmc-label__required" aria-label="required">*</span>
+                    </label>
+                    <div class="bmc-input__wrapper">
+                        <span class="bmc-input__prefix" id="bmc-arr-prefix" aria-hidden="true">€</span>
+                        <input
+                            type="number"
+                            id="bmc-net-arr"
+                            class="bmc-input"
+                            placeholder="750000"
+                            step="0.01"
+                            aria-label="Net New ARR amount"
+                            aria-required="true"
+                            aria-describedby="bmc-arr-help"
+                            aria-invalid="false"
+                        />
+                    </div>
+                    <span id="bmc-arr-help" class="bmc-help-text">
+                        New Annual Recurring Revenue added in the period
+                    </span>
+                    <span id="bmc-arr-error" class="bmc-error-text" role="alert" aria-live="polite"></span>
+                </div>
+
+                <!-- Calculate Button -->
+                <div class="bmc-form__actions">
+                    <button
+                        type="submit"
+                        class="bmc-button bmc-button--primary"
+                        aria-label="Calculate Burn Multiple"
+                    >
+                        Calculate Burn Multiple
+                    </button>
+                </div>
+            </form>
+
+            <!-- Result Display -->
+            <div
+                id="bmc-result-container"
+                class="bmc-result"
+                role="status"
+                aria-live="polite"
+                aria-atomic="true"
+                style="display: none;"
+            >
+                <!-- Result will be dynamically inserted here -->
+            </div>
+
+            <!-- Information Footer -->
+            <footer class="bmc-info">
+                <h2 class="bmc-info__title">Understanding Burn Multiple</h2>
+                <div class="bmc-info__content">
+                    <p class="bmc-info__text">
+                        <strong>Formula:</strong> Burn Multiple = Net Burn ÷ Net New ARR
+                    </p>
+                    <p class="bmc-info__text">
+                        The Burn Multiple measures capital efficiency by showing how many dollars you burn for every dollar of new ARR.
+                        Lower is better - it means you're growing efficiently.
+                    </p>
+                    <div class="bmc-info__benchmarks">
+                        <h3 class="bmc-info__subtitle">Benchmarks:</h3>
+                        <ul class="bmc-info__list">
+                            <li class="bmc-info__item bmc-info__item--excellent">
+                                <strong>&lt; 1.0:</strong> Excellent - Highly capital efficient
+                            </li>
+                            <li class="bmc-info__item bmc-info__item--good">
+                                <strong>1.0 - 1.5:</strong> Good - Healthy growth
+                            </li>
+                            <li class="bmc-info__item bmc-info__item--acceptable">
+                                <strong>1.5 - 2.0:</strong> Acceptable - Monitor closely
+                            </li>
+                            <li class="bmc-info__item bmc-info__item--concerning">
+                                <strong>&gt; 2.0:</strong> Concerning - Burning too much capital
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>

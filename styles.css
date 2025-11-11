@@ -1,0 +1,622 @@
+/**
+ * Burn Multiple Calculator - Stylesheet
+ * Light Minimalistic Theme
+ * Mobile-First Responsive Design
+ */
+
+/* ============================================================================
+   CSS Variables - Exact Color Palette
+   ========================================================================= */
+:root {
+    /* Background Colors */
+    --bg-white: #ffffff;
+    --bg-light: #f8f9fa;
+    --border-light: #e9ecef;
+
+    /* Accent Colors */
+    --accent-blue: #4a90e2;
+
+    /* Text Colors */
+    --text-dark: #1a1a1a;
+    --text-gray: #6c757d;
+    --text-light: #adb5bd;
+
+    /* Status Colors */
+    --error-red: #dc3545;
+    --success-green: #28a745;
+    --warning-orange: #fd7e14;
+
+    /* Shadows */
+    --shadow-subtle: rgba(0, 0, 0, 0.08);
+
+    /* Spacing */
+    --spacing-xs: 8px;
+    --spacing-sm: 12px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+
+    /* Border Radius */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+
+    /* Typography */
+    --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+    --font-size-base: 16px;
+    --font-size-sm: 14px;
+    --font-size-lg: 18px;
+    --font-size-xl: 24px;
+    --line-height-base: 1.5;
+
+    /* Transitions */
+    --transition-base: 0.2s ease;
+}
+
+/* ============================================================================
+   Reset & Base Styles
+   ========================================================================= */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-base);
+    color: var(--text-dark);
+    background-color: var(--bg-light);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================================================
+   Demo Wrapper (for standalone page)
+   ========================================================================= */
+.bmc-demo-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* ============================================================================
+   Container (Main Calculator Card)
+   ========================================================================= */
+.bmc-container {
+    width: 100%;
+    max-width: 100%;
+    background-color: var(--bg-white);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 4px 24px var(--shadow-subtle);
+    padding: 20px;
+    margin: 0 auto;
+}
+
+/* ============================================================================
+   Header
+   ========================================================================= */
+.bmc-header {
+    margin-bottom: var(--spacing-lg);
+    text-align: center;
+}
+
+.bmc-header__title {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: var(--spacing-sm);
+    line-height: 1.2;
+}
+
+.bmc-header__description {
+    font-size: var(--font-size-base);
+    color: var(--text-gray);
+    line-height: 1.6;
+}
+
+/* ============================================================================
+   Form
+   ========================================================================= */
+.bmc-form {
+    margin-bottom: var(--spacing-lg);
+}
+
+.bmc-form__group {
+    margin-bottom: var(--spacing-lg);
+}
+
+.bmc-form__group--currency {
+    margin-bottom: var(--spacing-lg);
+}
+
+/* Labels */
+.bmc-label {
+    display: block;
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: var(--spacing-xs);
+}
+
+.bmc-label__required {
+    color: var(--error-red);
+    margin-left: 2px;
+}
+
+/* Input Wrapper */
+.bmc-input__wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* Currency Prefix */
+.bmc-input__prefix {
+    position: absolute;
+    left: 16px;
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--text-gray);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Text Inputs */
+.bmc-input {
+    width: 100%;
+    height: 48px;
+    padding: 12px 16px 12px 40px;
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+    color: var(--text-dark);
+    background-color: var(--bg-light);
+    border: 2px solid var(--border-light);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-base);
+    outline: none;
+}
+
+.bmc-input::placeholder {
+    color: var(--text-light);
+}
+
+.bmc-input:hover {
+    border-color: var(--accent-blue);
+}
+
+.bmc-input:focus {
+    background-color: var(--bg-white);
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+.bmc-input:focus-visible {
+    outline: 3px solid var(--accent-blue);
+    outline-offset: 2px;
+}
+
+.bmc-input--invalid {
+    border-color: var(--error-red);
+}
+
+.bmc-input--invalid:focus {
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+}
+
+/* Select Dropdown */
+.bmc-select {
+    width: 100%;
+    height: 48px;
+    padding: 12px 40px 12px 16px;
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+    color: var(--text-dark);
+    background-color: var(--bg-light);
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%236c757d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    border: 2px solid var(--border-light);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+.bmc-select:hover {
+    border-color: var(--accent-blue);
+}
+
+.bmc-select:focus {
+    background-color: var(--bg-white);
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+.bmc-select:focus-visible {
+    outline: 3px solid var(--accent-blue);
+    outline-offset: 2px;
+}
+
+/* Help Text */
+.bmc-help-text {
+    display: block;
+    font-size: var(--font-size-sm);
+    color: var(--text-gray);
+    margin-top: var(--spacing-xs);
+}
+
+/* Error Text */
+.bmc-error-text {
+    display: block;
+    font-size: var(--font-size-sm);
+    color: var(--error-red);
+    margin-top: var(--spacing-xs);
+    font-weight: 500;
+}
+
+.bmc-error-text:empty {
+    display: none;
+}
+
+/* Form Actions */
+.bmc-form__actions {
+    margin-top: var(--spacing-xl);
+}
+
+/* Button */
+.bmc-button {
+    display: block;
+    width: 100%;
+    height: 48px;
+    padding: 12px 24px;
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--bg-white);
+    background-color: var(--accent-blue);
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    outline: none;
+    text-align: center;
+}
+
+.bmc-button:hover {
+    background-color: #3a7bc8;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+}
+
+.bmc-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(74, 144, 226, 0.3);
+}
+
+.bmc-button:focus-visible {
+    outline: 3px solid var(--accent-blue);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.2);
+}
+
+.bmc-button:disabled {
+    background-color: var(--border-light);
+    color: var(--text-light);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* ============================================================================
+   Result Display
+   ========================================================================= */
+.bmc-result {
+    padding: var(--spacing-lg);
+    background-color: var(--bg-light);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-lg);
+    text-align: center;
+    border: 2px solid var(--border-light);
+    transition: all var(--transition-base);
+}
+
+.bmc-result__value {
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: var(--spacing-sm);
+}
+
+.bmc-result__label {
+    display: inline-block;
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 4px 12px;
+    border-radius: 4px;
+    margin-bottom: var(--spacing-sm);
+}
+
+.bmc-result__description {
+    font-size: var(--font-size-base);
+    color: var(--text-gray);
+    margin-top: var(--spacing-sm);
+}
+
+.bmc-result__details {
+    font-size: var(--font-size-sm);
+    color: var(--text-gray);
+    margin-top: var(--spacing-xs);
+}
+
+/* Result State Colors */
+.bmc-result--excellent {
+    border-color: var(--success-green);
+    background-color: rgba(40, 167, 69, 0.05);
+}
+
+.bmc-result--excellent .bmc-result__value {
+    color: var(--success-green);
+}
+
+.bmc-result--excellent .bmc-result__label {
+    background-color: var(--success-green);
+    color: var(--bg-white);
+}
+
+.bmc-result--good {
+    border-color: var(--success-green);
+    background-color: rgba(40, 167, 69, 0.05);
+}
+
+.bmc-result--good .bmc-result__value {
+    color: var(--success-green);
+}
+
+.bmc-result--good .bmc-result__label {
+    background-color: var(--success-green);
+    color: var(--bg-white);
+}
+
+.bmc-result--acceptable {
+    border-color: var(--warning-orange);
+    background-color: rgba(253, 126, 20, 0.05);
+}
+
+.bmc-result--acceptable .bmc-result__value {
+    color: var(--warning-orange);
+}
+
+.bmc-result--acceptable .bmc-result__label {
+    background-color: var(--warning-orange);
+    color: var(--bg-white);
+}
+
+.bmc-result--concerning {
+    border-color: var(--error-red);
+    background-color: rgba(220, 53, 69, 0.05);
+}
+
+.bmc-result--concerning .bmc-result__value {
+    color: var(--error-red);
+}
+
+.bmc-result--concerning .bmc-result__label {
+    background-color: var(--error-red);
+    color: var(--bg-white);
+}
+
+.bmc-result--warning {
+    border-color: var(--warning-orange);
+    background-color: rgba(253, 126, 20, 0.05);
+}
+
+.bmc-result--warning .bmc-result__value {
+    color: var(--warning-orange);
+}
+
+.bmc-result--warning .bmc-result__label {
+    background-color: var(--warning-orange);
+    color: var(--bg-white);
+}
+
+.bmc-result--error {
+    border-color: var(--error-red);
+    background-color: rgba(220, 53, 69, 0.05);
+}
+
+.bmc-result--error .bmc-result__value {
+    color: var(--error-red);
+    font-size: var(--font-size-lg);
+}
+
+.bmc-result--error .bmc-result__label {
+    background-color: var(--error-red);
+    color: var(--bg-white);
+}
+
+/* ============================================================================
+   Info Section
+   ========================================================================= */
+.bmc-info {
+    padding-top: var(--spacing-lg);
+    border-top: 2px solid var(--border-light);
+}
+
+.bmc-info__title {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: var(--spacing-md);
+}
+
+.bmc-info__subtitle {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-top: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
+}
+
+.bmc-info__text {
+    font-size: var(--font-size-base);
+    color: var(--text-gray);
+    margin-bottom: var(--spacing-sm);
+    line-height: 1.6;
+}
+
+.bmc-info__benchmarks {
+    margin-top: var(--spacing-md);
+}
+
+.bmc-info__list {
+    list-style: none;
+    padding: 0;
+}
+
+.bmc-info__item {
+    padding: var(--spacing-sm);
+    margin-bottom: var(--spacing-xs);
+    border-left: 4px solid var(--border-light);
+    background-color: var(--bg-light);
+    border-radius: 4px;
+    font-size: var(--font-size-base);
+    color: var(--text-gray);
+}
+
+.bmc-info__item strong {
+    color: var(--text-dark);
+}
+
+.bmc-info__item--excellent {
+    border-left-color: var(--success-green);
+}
+
+.bmc-info__item--good {
+    border-left-color: var(--success-green);
+}
+
+.bmc-info__item--acceptable {
+    border-left-color: var(--warning-orange);
+}
+
+.bmc-info__item--concerning {
+    border-left-color: var(--error-red);
+}
+
+/* ============================================================================
+   Responsive Design - Tablet (768px - 1023px)
+   ========================================================================= */
+@media (min-width: 768px) {
+    .bmc-demo-wrapper {
+        padding: 32px;
+    }
+
+    .bmc-container {
+        max-width: 600px;
+        padding: 32px;
+    }
+
+    .bmc-header__title {
+        font-size: 28px;
+    }
+
+    .bmc-input,
+    .bmc-select,
+    .bmc-button {
+        height: 52px;
+    }
+
+    .bmc-result__value {
+        font-size: 56px;
+    }
+}
+
+/* ============================================================================
+   Responsive Design - Desktop (1024px+)
+   ========================================================================= */
+@media (min-width: 1024px) {
+    .bmc-demo-wrapper {
+        padding: 40px;
+    }
+
+    .bmc-container {
+        max-width: 700px;
+        padding: 40px;
+    }
+
+    .bmc-header__title {
+        font-size: 32px;
+    }
+
+    .bmc-input,
+    .bmc-select,
+    .bmc-button {
+        height: 56px;
+    }
+
+    .bmc-result__value {
+        font-size: 64px;
+    }
+
+    /* Two-column layout for form groups on desktop */
+    .bmc-form__group--currency {
+        margin-bottom: var(--spacing-lg);
+    }
+}
+
+/* ============================================================================
+   Accessibility - Reduced Motion
+   ========================================================================= */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ============================================================================
+   Accessibility - High Contrast Mode
+   ========================================================================= */
+@media (prefers-contrast: high) {
+    .bmc-container {
+        border: 2px solid currentColor;
+    }
+
+    .bmc-input,
+    .bmc-select {
+        border-width: 3px;
+    }
+
+    .bmc-button {
+        border: 2px solid currentColor;
+    }
+}
+
+/* ============================================================================
+   Print Styles
+   ========================================================================= */
+@media print {
+    .bmc-demo-wrapper {
+        padding: 0;
+        background: white;
+    }
+
+    .bmc-container {
+        box-shadow: none;
+        border: 1px solid #000;
+    }
+
+    .bmc-button {
+        display: none;
+    }
+}

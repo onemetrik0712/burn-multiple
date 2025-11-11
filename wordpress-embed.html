@@ -1,0 +1,875 @@
+<!--
+    Burn Multiple Calculator - WordPress Embed Version
+    Single-file, self-contained calculator for WordPress Custom HTML block
+
+    INSTALLATION INSTRUCTIONS:
+    1. Copy this entire file
+    2. In WordPress, add a "Custom HTML" block
+    3. Paste the copied code
+    4. Save/Publish
+
+    No external dependencies required!
+-->
+
+<div id="burn-multiple-calc-wp" class="bmc-wp-root">
+    <main class="bmc-container" role="main">
+        <!-- Header Section -->
+        <header class="bmc-header">
+            <h1 class="bmc-header__title" id="bmc-wp-calculator-title">Burn Multiple Calculator</h1>
+            <p class="bmc-header__description">
+                Measure your capital efficiency by calculating how much you're burning per dollar of new ARR generated.
+            </p>
+        </header>
+
+        <!-- Calculator Form -->
+        <form class="bmc-form" aria-labelledby="bmc-wp-calculator-title" novalidate>
+            <!-- Currency Selector -->
+            <div class="bmc-form__group bmc-form__group--currency">
+                <label for="bmc-wp-currency" class="bmc-label">
+                    Currency
+                </label>
+                <div class="bmc-input__wrapper">
+                    <select id="bmc-wp-currency" class="bmc-select" aria-label="Select currency for calculations">
+                        <option value="EUR" selected>EUR (€) - Euro</option>
+                        <option value="USD">USD ($) - US Dollar</option>
+                        <option value="GBP">GBP (£) - British Pound</option>
+                        <option value="JPY">JPY (¥) - Japanese Yen</option>
+                        <option value="CNY">CNY (¥) - Chinese Yuan</option>
+                        <option value="INR">INR (₹) - Indian Rupee</option>
+                        <option value="AUD">AUD (A$) - Australian Dollar</option>
+                        <option value="CAD">CAD (C$) - Canadian Dollar</option>
+                        <option value="CHF">CHF (Fr) - Swiss Franc</option>
+                        <option value="SEK">SEK (kr) - Swedish Krona</option>
+                        <option value="NOK">NOK (kr) - Norwegian Krone</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Net Burn Input -->
+            <div class="bmc-form__group">
+                <label for="bmc-wp-net-burn" class="bmc-label">
+                    Net Burn
+                    <span class="bmc-label__required" aria-label="required">*</span>
+                </label>
+                <div class="bmc-input__wrapper">
+                    <span class="bmc-input__prefix" id="bmc-wp-burn-prefix" aria-hidden="true">€</span>
+                    <input
+                        type="number"
+                        id="bmc-wp-net-burn"
+                        class="bmc-input"
+                        placeholder="500000"
+                        min="0"
+                        step="0.01"
+                        aria-label="Net Burn amount"
+                        aria-required="true"
+                        aria-describedby="bmc-wp-burn-help"
+                        aria-invalid="false"
+                    />
+                </div>
+                <span id="bmc-wp-burn-help" class="bmc-help-text">
+                    Total cash consumed in the period (must be positive)
+                </span>
+                <span id="bmc-wp-burn-error" class="bmc-error-text" role="alert" aria-live="polite"></span>
+            </div>
+
+            <!-- Net New ARR Input -->
+            <div class="bmc-form__group">
+                <label for="bmc-wp-net-arr" class="bmc-label">
+                    Net New ARR
+                    <span class="bmc-label__required" aria-label="required">*</span>
+                </label>
+                <div class="bmc-input__wrapper">
+                    <span class="bmc-input__prefix" id="bmc-wp-arr-prefix" aria-hidden="true">€</span>
+                    <input
+                        type="number"
+                        id="bmc-wp-net-arr"
+                        class="bmc-input"
+                        placeholder="750000"
+                        step="0.01"
+                        aria-label="Net New ARR amount"
+                        aria-required="true"
+                        aria-describedby="bmc-wp-arr-help"
+                        aria-invalid="false"
+                    />
+                </div>
+                <span id="bmc-wp-arr-help" class="bmc-help-text">
+                    New Annual Recurring Revenue added in the period
+                </span>
+                <span id="bmc-wp-arr-error" class="bmc-error-text" role="alert" aria-live="polite"></span>
+            </div>
+
+            <!-- Calculate Button -->
+            <div class="bmc-form__actions">
+                <button type="submit" class="bmc-button bmc-button--primary" aria-label="Calculate Burn Multiple">
+                    Calculate Burn Multiple
+                </button>
+            </div>
+        </form>
+
+        <!-- Result Display -->
+        <div
+            id="bmc-wp-result-container"
+            class="bmc-result"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+            style="display: none;"
+        ></div>
+
+        <!-- Information Footer -->
+        <footer class="bmc-info">
+            <h2 class="bmc-info__title">Understanding Burn Multiple</h2>
+            <div class="bmc-info__content">
+                <p class="bmc-info__text">
+                    <strong>Formula:</strong> Burn Multiple = Net Burn ÷ Net New ARR
+                </p>
+                <p class="bmc-info__text">
+                    The Burn Multiple measures capital efficiency by showing how many dollars you burn for every dollar of new ARR.
+                    Lower is better - it means you're growing efficiently.
+                </p>
+                <div class="bmc-info__benchmarks">
+                    <h3 class="bmc-info__subtitle">Benchmarks:</h3>
+                    <ul class="bmc-info__list">
+                        <li class="bmc-info__item bmc-info__item--excellent">
+                            <strong>&lt; 1.0:</strong> Excellent - Highly capital efficient
+                        </li>
+                        <li class="bmc-info__item bmc-info__item--good">
+                            <strong>1.0 - 1.5:</strong> Good - Healthy growth
+                        </li>
+                        <li class="bmc-info__item bmc-info__item--acceptable">
+                            <strong>1.5 - 2.0:</strong> Acceptable - Monitor closely
+                        </li>
+                        <li class="bmc-info__item bmc-info__item--concerning">
+                            <strong>&gt; 2.0:</strong> Concerning - Burning too much capital
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
+    </main>
+</div>
+
+<!-- Inline Styles -->
+<style>
+#burn-multiple-calc-wp {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #1a1a1a;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#burn-multiple-calc-wp * {
+    box-sizing: border-box;
+}
+
+#burn-multiple-calc-wp .bmc-container {
+    width: 100%;
+    max-width: 700px;
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    padding: 20px;
+    margin: 20px auto;
+}
+
+#burn-multiple-calc-wp .bmc-header {
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+#burn-multiple-calc-wp .bmc-header__title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 12px;
+    line-height: 1.2;
+}
+
+#burn-multiple-calc-wp .bmc-header__description {
+    font-size: 16px;
+    color: #6c757d;
+    line-height: 1.6;
+}
+
+#burn-multiple-calc-wp .bmc-form {
+    margin-bottom: 24px;
+}
+
+#burn-multiple-calc-wp .bmc-form__group {
+    margin-bottom: 24px;
+}
+
+#burn-multiple-calc-wp .bmc-label {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+}
+
+#burn-multiple-calc-wp .bmc-label__required {
+    color: #dc3545;
+    margin-left: 2px;
+}
+
+#burn-multiple-calc-wp .bmc-input__wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+#burn-multiple-calc-wp .bmc-input__prefix {
+    position: absolute;
+    left: 16px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #6c757d;
+    pointer-events: none;
+    z-index: 1;
+}
+
+#burn-multiple-calc-wp .bmc-input {
+    width: 100%;
+    height: 48px;
+    padding: 12px 16px 12px 40px;
+    font-family: inherit;
+    font-size: 16px;
+    color: #1a1a1a;
+    background-color: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+#burn-multiple-calc-wp .bmc-input::placeholder {
+    color: #adb5bd;
+}
+
+#burn-multiple-calc-wp .bmc-input:hover {
+    border-color: #4a90e2;
+}
+
+#burn-multiple-calc-wp .bmc-input:focus {
+    background-color: #ffffff;
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+#burn-multiple-calc-wp .bmc-input--invalid {
+    border-color: #dc3545;
+}
+
+#burn-multiple-calc-wp .bmc-select {
+    width: 100%;
+    height: 48px;
+    padding: 12px 40px 12px 16px;
+    font-family: inherit;
+    font-size: 16px;
+    color: #1a1a1a;
+    background-color: #f8f9fa;
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%236c757d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    outline: none;
+    appearance: none;
+}
+
+#burn-multiple-calc-wp .bmc-select:hover {
+    border-color: #4a90e2;
+}
+
+#burn-multiple-calc-wp .bmc-select:focus {
+    background-color: #ffffff;
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+#burn-multiple-calc-wp .bmc-help-text {
+    display: block;
+    font-size: 14px;
+    color: #6c757d;
+    margin-top: 8px;
+}
+
+#burn-multiple-calc-wp .bmc-error-text {
+    display: block;
+    font-size: 14px;
+    color: #dc3545;
+    margin-top: 8px;
+    font-weight: 500;
+}
+
+#burn-multiple-calc-wp .bmc-error-text:empty {
+    display: none;
+}
+
+#burn-multiple-calc-wp .bmc-form__actions {
+    margin-top: 32px;
+}
+
+#burn-multiple-calc-wp .bmc-button {
+    display: block;
+    width: 100%;
+    height: 48px;
+    padding: 12px 24px;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: #4a90e2;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    outline: none;
+    text-align: center;
+}
+
+#burn-multiple-calc-wp .bmc-button:hover {
+    background-color: #3a7bc8;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+}
+
+#burn-multiple-calc-wp .bmc-button:active {
+    transform: translateY(0);
+}
+
+#burn-multiple-calc-wp .bmc-result {
+    padding: 24px;
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    text-align: center;
+    border: 2px solid #e9ecef;
+    transition: all 0.2s ease;
+}
+
+#burn-multiple-calc-wp .bmc-result__value {
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 12px;
+}
+
+#burn-multiple-calc-wp .bmc-result__label {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 4px 12px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+}
+
+#burn-multiple-calc-wp .bmc-result__description {
+    font-size: 16px;
+    color: #6c757d;
+    margin-top: 12px;
+}
+
+#burn-multiple-calc-wp .bmc-result__details {
+    font-size: 14px;
+    color: #6c757d;
+    margin-top: 8px;
+}
+
+#burn-multiple-calc-wp .bmc-result--excellent {
+    border-color: #28a745;
+    background-color: rgba(40, 167, 69, 0.05);
+}
+
+#burn-multiple-calc-wp .bmc-result--excellent .bmc-result__value {
+    color: #28a745;
+}
+
+#burn-multiple-calc-wp .bmc-result--excellent .bmc-result__label {
+    background-color: #28a745;
+    color: #ffffff;
+}
+
+#burn-multiple-calc-wp .bmc-result--good {
+    border-color: #28a745;
+    background-color: rgba(40, 167, 69, 0.05);
+}
+
+#burn-multiple-calc-wp .bmc-result--good .bmc-result__value {
+    color: #28a745;
+}
+
+#burn-multiple-calc-wp .bmc-result--good .bmc-result__label {
+    background-color: #28a745;
+    color: #ffffff;
+}
+
+#burn-multiple-calc-wp .bmc-result--acceptable {
+    border-color: #fd7e14;
+    background-color: rgba(253, 126, 20, 0.05);
+}
+
+#burn-multiple-calc-wp .bmc-result--acceptable .bmc-result__value {
+    color: #fd7e14;
+}
+
+#burn-multiple-calc-wp .bmc-result--acceptable .bmc-result__label {
+    background-color: #fd7e14;
+    color: #ffffff;
+}
+
+#burn-multiple-calc-wp .bmc-result--concerning {
+    border-color: #dc3545;
+    background-color: rgba(220, 53, 69, 0.05);
+}
+
+#burn-multiple-calc-wp .bmc-result--concerning .bmc-result__value {
+    color: #dc3545;
+}
+
+#burn-multiple-calc-wp .bmc-result--concerning .bmc-result__label {
+    background-color: #dc3545;
+    color: #ffffff;
+}
+
+#burn-multiple-calc-wp .bmc-result--warning {
+    border-color: #fd7e14;
+    background-color: rgba(253, 126, 20, 0.05);
+}
+
+#burn-multiple-calc-wp .bmc-result--warning .bmc-result__value {
+    color: #fd7e14;
+}
+
+#burn-multiple-calc-wp .bmc-result--warning .bmc-result__label {
+    background-color: #fd7e14;
+    color: #ffffff;
+}
+
+#burn-multiple-calc-wp .bmc-result--error {
+    border-color: #dc3545;
+    background-color: rgba(220, 53, 69, 0.05);
+}
+
+#burn-multiple-calc-wp .bmc-result--error .bmc-result__value {
+    color: #dc3545;
+    font-size: 18px;
+}
+
+#burn-multiple-calc-wp .bmc-result--error .bmc-result__label {
+    background-color: #dc3545;
+    color: #ffffff;
+}
+
+#burn-multiple-calc-wp .bmc-info {
+    padding-top: 24px;
+    border-top: 2px solid #e9ecef;
+}
+
+#burn-multiple-calc-wp .bmc-info__title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 16px;
+}
+
+#burn-multiple-calc-wp .bmc-info__subtitle {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-top: 16px;
+    margin-bottom: 12px;
+}
+
+#burn-multiple-calc-wp .bmc-info__text {
+    font-size: 16px;
+    color: #6c757d;
+    margin-bottom: 12px;
+    line-height: 1.6;
+}
+
+#burn-multiple-calc-wp .bmc-info__list {
+    list-style: none;
+    padding: 0;
+}
+
+#burn-multiple-calc-wp .bmc-info__item {
+    padding: 12px;
+    margin-bottom: 8px;
+    border-left: 4px solid #e9ecef;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #6c757d;
+}
+
+#burn-multiple-calc-wp .bmc-info__item strong {
+    color: #1a1a1a;
+}
+
+#burn-multiple-calc-wp .bmc-info__item--excellent {
+    border-left-color: #28a745;
+}
+
+#burn-multiple-calc-wp .bmc-info__item--good {
+    border-left-color: #28a745;
+}
+
+#burn-multiple-calc-wp .bmc-info__item--acceptable {
+    border-left-color: #fd7e14;
+}
+
+#burn-multiple-calc-wp .bmc-info__item--concerning {
+    border-left-color: #dc3545;
+}
+
+@media (min-width: 768px) {
+    #burn-multiple-calc-wp .bmc-container {
+        padding: 32px;
+    }
+
+    #burn-multiple-calc-wp .bmc-header__title {
+        font-size: 28px;
+    }
+
+    #burn-multiple-calc-wp .bmc-input,
+    #burn-multiple-calc-wp .bmc-select,
+    #burn-multiple-calc-wp .bmc-button {
+        height: 52px;
+    }
+
+    #burn-multiple-calc-wp .bmc-result__value {
+        font-size: 56px;
+    }
+}
+
+@media (min-width: 1024px) {
+    #burn-multiple-calc-wp .bmc-container {
+        padding: 40px;
+    }
+
+    #burn-multiple-calc-wp .bmc-header__title {
+        font-size: 32px;
+    }
+
+    #burn-multiple-calc-wp .bmc-input,
+    #burn-multiple-calc-wp .bmc-select,
+    #burn-multiple-calc-wp .bmc-button {
+        height: 56px;
+    }
+
+    #burn-multiple-calc-wp .bmc-result__value {
+        font-size: 64px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #burn-multiple-calc-wp * {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+</style>
+
+<!-- Inline JavaScript -->
+<script>
+(function() {
+    'use strict';
+
+    const CURRENCIES = [
+        { code: 'EUR', symbol: '€' },
+        { code: 'USD', symbol: '$' },
+        { code: 'GBP', symbol: '£' },
+        { code: 'JPY', symbol: '¥' },
+        { code: 'CNY', symbol: '¥' },
+        { code: 'INR', symbol: '₹' },
+        { code: 'AUD', symbol: 'A$' },
+        { code: 'CAD', symbol: 'C$' },
+        { code: 'CHF', symbol: 'Fr' },
+        { code: 'SEK', symbol: 'kr' },
+        { code: 'NOK', symbol: 'kr' }
+    ];
+
+    const MAX_VALUE = 1e12;
+    const MIN_VALUE = -1e12;
+
+    let elements = {};
+    let currentCurrency = 'EUR';
+
+    function validateInput(value, fieldName) {
+        if (value === '' || value === null || value === undefined) {
+            return { valid: false, error: 'This field is required' };
+        }
+
+        const numValue = parseFloat(value);
+
+        if (isNaN(numValue)) {
+            return { valid: false, error: 'Please enter a valid number' };
+        }
+
+        if (fieldName === 'netBurn') {
+            if (numValue <= 0) {
+                return { valid: false, error: 'Net Burn must be greater than zero' };
+            }
+            if (numValue > MAX_VALUE) {
+                return { valid: false, error: 'Value exceeds maximum limit' };
+            }
+        }
+
+        if (fieldName === 'netArr') {
+            if (numValue === 0) {
+                return { valid: false, error: 'Net New ARR cannot be zero' };
+            }
+            if (numValue > MAX_VALUE || numValue < MIN_VALUE) {
+                return { valid: false, error: 'Value exceeds maximum limit' };
+            }
+        }
+
+        return { valid: true, error: '' };
+    }
+
+    function validateForm() {
+        const burnValue = elements.netBurnInput.value;
+        const arrValue = elements.netArrInput.value;
+        const burnValidation = validateInput(burnValue, 'netBurn');
+        const arrValidation = validateInput(arrValue, 'netArr');
+
+        return {
+            valid: burnValidation.valid && arrValidation.valid,
+            errors: {
+                burn: burnValidation.error,
+                arr: arrValidation.error
+            }
+        };
+    }
+
+    function calculateBurnMultiple(burn, arr) {
+        if (arr === 0) return null;
+        return burn / arr;
+    }
+
+    function formatNumber(num, decimals = 2) {
+        return num.toFixed(decimals);
+    }
+
+    function formatCurrency(value, currencyCode) {
+        const currency = CURRENCIES.find(c => c.code === currencyCode);
+        const symbol = currency ? currency.symbol : '';
+        const formatted = Math.abs(value).toLocaleString('en-US', {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        });
+        return symbol + formatted;
+    }
+
+    function evaluateResult(burnMultiple, arr) {
+        if (arr < 0) {
+            return {
+                class: 'bmc-result--warning',
+                label: 'Warning',
+                description: 'Negative ARR growth detected while burning cash'
+            };
+        }
+
+        if (burnMultiple < 1.0) {
+            return {
+                class: 'bmc-result--excellent',
+                label: 'Excellent',
+                description: 'Highly capital efficient - You\'re spending less than $1 to generate $1 of ARR'
+            };
+        } else if (burnMultiple < 1.5) {
+            return {
+                class: 'bmc-result--good',
+                label: 'Good',
+                description: 'Healthy growth - Your capital efficiency is within good industry standards'
+            };
+        } else if (burnMultiple < 2.0) {
+            return {
+                class: 'bmc-result--acceptable',
+                label: 'Acceptable',
+                description: 'Monitor closely - You\'re burning a moderate amount per ARR dollar'
+            };
+        } else {
+            return {
+                class: 'bmc-result--concerning',
+                label: 'Concerning',
+                description: 'High burn rate - You\'re spending significantly more than industry benchmarks'
+            };
+        }
+    }
+
+    function displayResult(result, burn, arr) {
+        const evaluation = evaluateResult(result, arr);
+        const formattedResult = formatNumber(Math.abs(result), 2);
+        const formattedBurn = formatCurrency(burn, currentCurrency);
+        const formattedArr = formatCurrency(arr, currentCurrency);
+
+        const resultHTML = `
+            <div class="bmc-result__value">${formattedResult}</div>
+            <div class="bmc-result__label">${evaluation.label}</div>
+            <p class="bmc-result__description">${evaluation.description}</p>
+            <p class="bmc-result__details">
+                Burning ${formattedBurn} to generate ${formattedArr} in new ARR
+            </p>
+        `;
+
+        elements.resultContainer.innerHTML = resultHTML;
+        elements.resultContainer.className = 'bmc-result ' + evaluation.class;
+        elements.resultContainer.style.display = 'block';
+        elements.resultContainer.setAttribute('aria-label',
+            'Burn Multiple result: ' + formattedResult + '. Status: ' + evaluation.label + '. ' + evaluation.description
+        );
+    }
+
+    function displayError(message) {
+        const errorHTML = `
+            <div class="bmc-result__value">⚠️</div>
+            <div class="bmc-result__label">Error</div>
+            <p class="bmc-result__description">${message}</p>
+        `;
+
+        elements.resultContainer.innerHTML = errorHTML;
+        elements.resultContainer.className = 'bmc-result bmc-result--error';
+        elements.resultContainer.style.display = 'block';
+        elements.resultContainer.setAttribute('aria-label', 'Error: ' + message);
+    }
+
+    function clearResult() {
+        elements.resultContainer.style.display = 'none';
+        elements.resultContainer.innerHTML = '';
+    }
+
+    function showFieldError(field, message) {
+        if (field === 'burn') {
+            elements.burnError.textContent = message;
+            elements.netBurnInput.setAttribute('aria-invalid', 'true');
+            elements.netBurnInput.classList.add('bmc-input--invalid');
+        } else if (field === 'arr') {
+            elements.arrError.textContent = message;
+            elements.netArrInput.setAttribute('aria-invalid', 'true');
+            elements.netArrInput.classList.add('bmc-input--invalid');
+        }
+    }
+
+    function clearFieldError(field) {
+        if (field === 'burn') {
+            elements.burnError.textContent = '';
+            elements.netBurnInput.setAttribute('aria-invalid', 'false');
+            elements.netBurnInput.classList.remove('bmc-input--invalid');
+        } else if (field === 'arr') {
+            elements.arrError.textContent = '';
+            elements.netArrInput.setAttribute('aria-invalid', 'false');
+            elements.netArrInput.classList.remove('bmc-input--invalid');
+        }
+    }
+
+    function updateCurrencySymbols(currencyCode) {
+        const currency = CURRENCIES.find(c => c.code === currencyCode);
+        if (currency) {
+            elements.burnPrefix.textContent = currency.symbol;
+            elements.arrPrefix.textContent = currency.symbol;
+            currentCurrency = currencyCode;
+        }
+    }
+
+    function handleCurrencyChange(e) {
+        updateCurrencySymbols(e.target.value);
+    }
+
+    function handleInputChange(e) {
+        const field = e.target.id === 'bmc-wp-net-burn' ? 'burn' : 'arr';
+        const fieldName = e.target.id === 'bmc-wp-net-burn' ? 'netBurn' : 'netArr';
+        const value = e.target.value;
+
+        clearFieldError(field);
+
+        if (value !== '') {
+            const validation = validateInput(value, fieldName);
+            if (!validation.valid) {
+                showFieldError(field, validation.error);
+            }
+        }
+    }
+
+    function handleCalculate(e) {
+        e.preventDefault();
+
+        clearFieldError('burn');
+        clearFieldError('arr');
+
+        const validation = validateForm();
+
+        if (!validation.valid) {
+            if (validation.errors.burn) {
+                showFieldError('burn', validation.errors.burn);
+            }
+            if (validation.errors.arr) {
+                showFieldError('arr', validation.errors.arr);
+            }
+            clearResult();
+            return;
+        }
+
+        const burn = parseFloat(elements.netBurnInput.value);
+        const arr = parseFloat(elements.netArrInput.value);
+        const result = calculateBurnMultiple(burn, arr);
+
+        if (result === null) {
+            displayError('Unable to calculate. Please check your inputs.');
+            return;
+        }
+
+        displayResult(result, burn, arr);
+
+        if (window.innerWidth < 768) {
+            setTimeout(function() {
+                elements.resultContainer.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'nearest'
+                });
+            }, 100);
+        }
+    }
+
+    function init() {
+        elements = {
+            currencySelect: document.getElementById('bmc-wp-currency'),
+            netBurnInput: document.getElementById('bmc-wp-net-burn'),
+            netArrInput: document.getElementById('bmc-wp-net-arr'),
+            burnPrefix: document.getElementById('bmc-wp-burn-prefix'),
+            arrPrefix: document.getElementById('bmc-wp-arr-prefix'),
+            burnError: document.getElementById('bmc-wp-burn-error'),
+            arrError: document.getElementById('bmc-wp-arr-error'),
+            resultContainer: document.getElementById('bmc-wp-result-container'),
+            form: document.querySelector('#burn-multiple-calc-wp .bmc-form')
+        };
+
+        if (!elements.form) {
+            console.error('Burn Multiple Calculator: Required DOM elements not found');
+            return;
+        }
+
+        currentCurrency = elements.currencySelect.value;
+        updateCurrencySymbols(currentCurrency);
+
+        elements.currencySelect.addEventListener('change', handleCurrencyChange);
+        elements.netBurnInput.addEventListener('input', handleInputChange);
+        elements.netBurnInput.addEventListener('blur', handleInputChange);
+        elements.netArrInput.addEventListener('input', handleInputChange);
+        elements.netArrInput.addEventListener('blur', handleInputChange);
+        elements.form.addEventListener('submit', handleCalculate);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+</script>
